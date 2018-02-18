@@ -1,138 +1,61 @@
 package com.example.anjali.retreivedata;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
+import android.widget.RadioButton;
+import android.widget.Switch;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-
+    String url = "";
     private String TAG = MainActivity.class.getSimpleName();
-
-    private ProgressDialog pDialog;
-    private ListView lv;
-
-    // URL to get contacts JSON
-    private static String url = "https://sangamatnsakacom.000webhostapp.com/getdata_6.php";
-
-    public static ArrayList<HashMap<String, String>> contactList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        contactList = new ArrayList<>();
-
-        lv = (ListView) findViewById(R.id.list);
-
-        new GetContacts().execute();
     }
-
-    /**
-     * Async task class to get json by making HTTP call
-     */
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            HttpHandler sh = new HttpHandler();
-
-            // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(url);
-
-            Log.e(TAG, "Response from url: " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    JSONArray contacts = jsonObj.getJSONArray("data");
-
-                    // looping through All Contacts
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
-
-                        String service_id = c.getString("Service_id");
-                        String application_id = c.getString("application_id");
-                        String units = c.getString("units");
-                        String timestamp = c.getString("timestamp");
-
-                        // tmp hash map for single contact
-                        HashMap<String, String> contact = new HashMap<>();
-
-                        // adding each child node to HashMap key => value
-                        contact.put("service_id", service_id);
-                        contact.put("application_id", application_id);
-                        contact.put("units", units);
-                        contact.put("timestamp", timestamp);
-
-                        // adding contact to contact list
-                        contactList.add(contact);
-                    }
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    });
-
+    public void doneSelection(View v){
+        boolean checked = ((RadioButton) v).isChecked();
+        RadioButton hour = (RadioButton)findViewById(R.id.hour);
+        RadioButton day = (RadioButton) findViewById(R.id.day);
+        RadioButton week = (RadioButton) findViewById(R.id.week);
+        switch(v.getId()) {
+            case R.id.hour:
+                if (checked){
+                    url = "https://sangamatnsakacom.000webhostapp.com/getdata_6.php?val=1";
                 }
-            } else {
-                Log.e(TAG, "Couldn't get json from server.");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
-
-            }
-
-            return null;
+                    break;
+            case R.id.day:
+                if (checked){
+                    url = "https://sangamatnsakacom.000webhostapp.com/getdata_6.php?val=2";
+                }
+                    break;
+            case R.id.week:
+                if (checked){
+                    url = "https://sangamatnsakacom.000webhostapp.com/getdata_6.php?val=3";
+                }
+                    break;
         }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.d(TAG, String.valueOf(contactList));
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-
-        }
-
+    }
+    public void show(View v){
+        Intent i = new Intent(this, RealActivity.class);
+        i.putExtra("url", url);
+        startActivity(i);
     }
 }
