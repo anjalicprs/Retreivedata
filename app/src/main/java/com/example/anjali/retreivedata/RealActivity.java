@@ -151,7 +151,6 @@ public class RealActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
 
-
         }
     }
 }
