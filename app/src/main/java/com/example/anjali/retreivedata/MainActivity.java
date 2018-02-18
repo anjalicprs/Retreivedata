@@ -38,19 +38,19 @@ public class MainActivity extends AppCompatActivity {
         switch(v.getId()) {
             case R.id.hour:
                 if (checked){
-                    url = "https://sangamatnsakacom.000webhostapp.com/getdata_6.php?val=1";
+                    url = "http://165.227.105.231/sangam/php4.php";
                 }
-                    break;
+                break;
             case R.id.day:
                 if (checked){
-                    url = "https://sangamatnsakacom.000webhostapp.com/getdata_6.php?val=2";
+                    url = "http://165.227.105.231/sangam/php4.php";
                 }
-                    break;
+                break;
             case R.id.week:
                 if (checked){
-                    url = "https://sangamatnsakacom.000webhostapp.com/getdata_6.php?val=3";
+                    url = "http://165.227.105.231/sangam/php4.php";
                 }
-                    break;
+                break;
         }
     }
     public void show(View v){

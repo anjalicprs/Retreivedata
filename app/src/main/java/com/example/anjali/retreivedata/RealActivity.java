@@ -33,13 +33,13 @@ public class RealActivity extends AppCompatActivity {
 
     // URL to get contacts JSON
     private static String url = null;
-
+    PieChart pieChart;
     public static ArrayList<HashMap<String, String>> contactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_real);
         Intent i = getIntent();
         Bundle bundle = i.getExtras();
         url = (String) bundle.get("url");
@@ -115,8 +115,43 @@ public class RealActivity extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            PieChart.pieChart();
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+            /**
+             * Updating parsed JSON data into ListView
+             * */
+
+            pieChart(result);
         }
 
+    }
+    public void pieChart(String result)
+    {
+        try
+        {
+            float[][] array = new float[2][5];
+            String[] words=result.split(":");
+            System.out.println(words[0]);
+            System.out.println(words[1]);
+            System.out.println(words[2]);
+            System.out.println(words[3]);
+            String[] applia1 = words[1].split(",");
+            String[] applia2 = words[2].split(",");
+            for(int i=1;i<applia1.length-1;i++)
+            {
+                array[0][i-1]=Float.valueOf(applia1[i]);
+                System.out.println(array[0][i-1]);
+            }
+            for(int i=1;i<applia2.length-1;i++)
+            {
+                array[1][i-1]=Float.valueOf(applia1[i]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
     }
 }

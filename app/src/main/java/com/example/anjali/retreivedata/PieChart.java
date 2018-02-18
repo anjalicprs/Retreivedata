@@ -2,6 +2,8 @@ package com.example.anjali.retreivedata;
 
 import android.util.Log;
 
+import com.github.mikephil.charting.charts.LineChart;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -16,14 +18,27 @@ import java.util.HashMap;
 public class PieChart {
     private static final String TAG ="" ;
 
-    public static void pieChart()
+    public static void pieChart(String result)
     {
         try
         {
-            ArrayList<HashMap<String, String>> pieList = RealActivity.contactList;
-            ArrayList<HashMap<Integer,Double>> summedValue;
-            for(int count=0;count<pieList.size();count++){
 
+            float[][] array = new float[2][5];
+            String[] words=result.split(":");
+            System.out.println(words[0]);
+            System.out.println(words[1]);
+            System.out.println(words[2]);
+            System.out.println(words[3]);
+            String[] applia1 = words[1].split(",");
+            String[] applia2 = words[2].split(",");
+            for(int i=1;i<applia1.length-1;i++)
+            {
+                array[0][i-1]=Float.valueOf(applia1[i]);
+                System.out.println(array[0][i-1]);
+            }
+            for(int i=1;i<applia2.length-1;i++)
+            {
+                array[1][i-1]=Float.valueOf(applia1[i]);
             }
         } catch (Exception e) {
             e.printStackTrace();
