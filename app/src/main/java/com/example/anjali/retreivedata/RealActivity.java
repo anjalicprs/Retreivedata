@@ -2,6 +2,7 @@ package com.example.anjali.retreivedata;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +41,8 @@ public class RealActivity extends AppCompatActivity {
 
     // URL to get contacts JSON
     private static String url = null;
-    PieChart pieChart;
+    LineChart lineChart;
+    PieChart piechart;
     public static ArrayList<HashMap<String, String>> contactList;
 
     @Override
@@ -129,29 +138,53 @@ public class RealActivity extends AppCompatActivity {
     }
     public void pieChart(String result)
     {
-        try
+       //piechart = (PieChart)findViewById(R.id.idpiechart);
+        lineChart = (LineChart) findViewById(R.id.lineChart);
+        float[][] appliance = new float[2][5];
+        String[] words=result.split(":");
+        System.out.println(words[0]);
+        System.out.println(words[1]);
+        System.out.println(words[2]);
+        System.out.println(words[3]);
+        String[] applia1 = words[1].split(",");
+        String[] applia2 = words[2].split(",");
+        for(int i=1;i<applia1.length-1;i++)
         {
-            float[][] array = new float[2][5];
-            String[] words=result.split(":");
-            System.out.println(words[0]);
-            System.out.println(words[1]);
-            System.out.println(words[2]);
-            System.out.println(words[3]);
-            String[] applia1 = words[1].split(",");
-            String[] applia2 = words[2].split(",");
-            for(int i=1;i<applia1.length-1;i++)
-            {
-                array[0][i-1]=Float.valueOf(applia1[i]);
-                System.out.println(array[0][i-1]);
-            }
-            for(int i=1;i<applia2.length-1;i++)
-            {
-                array[1][i-1]=Float.valueOf(applia1[i]);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-
+            appliance[0][i-1]=Float.valueOf(applia1[i]);
+            System.out.println(appliance[0][i-1]);
         }
+        for(int i=1;i<applia2.length-1;i++)
+        {
+            appliance[1][i-1]=Float.valueOf(applia1[i]);
+        }
+        ArrayList<String> xAXES = new ArrayList<>();
+        ArrayList<Entry> yAXISsin = new ArrayList<>();
+        ArrayList<Entry> yAXIScos = new ArrayList<>();
+        double x = 0 ;
+        int numDataPoints = applia2.length-2;
+        for(int i=0;i<numDataPoints;i++){
+            yAXISsin.add(new Entry(i,appliance[0][i]));
+            yAXIScos.add(new Entry(i,appliance[1][i]));
+            xAXES.add(i, String.valueOf(i));
+        }
+        String[] xaxes = new String[xAXES.size()];
+        for(int i=0; i<xAXES.size();i++){
+            xaxes[i] = xAXES.get(i).toString();
+        }
+
+        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
+        LineDataSet lineDataSet1 = new LineDataSet(yAXIScos,"fan");
+        LineDataSet lineDataSet2 = new LineDataSet(yAXISsin,"fridge");
+
+        lineDataSet1.setDrawCircles(false);
+        lineDataSet1.setColors(Color.RED);
+        lineDataSet2.setDrawCircles(false);
+        lineDataSet2.setColors(Color.BLUE);
+
+        lineDataSets.add(lineDataSet1);
+        lineDataSets.add(lineDataSet2);
+
+        lineChart.setData(new LineData(lineDataSets));
+        lineChart.setVisibleXRangeMaximum(65f);
     }
 }
