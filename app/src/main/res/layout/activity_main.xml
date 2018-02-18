@@ -17,7 +17,7 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LastHour Data graph"
+            android:text="LastHour Data Graph"
             android:onClick="doneSelection"
             android:id="@+id/hour"/>
         <RadioButton

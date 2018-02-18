@@ -43,6 +43,7 @@ public class RealActivity extends AppCompatActivity {
         Intent i = getIntent();
         Bundle bundle = i.getExtras();
         url = (String) bundle.get("url");
+        Log.e(TAG, "The received URL is :: " + url);
         new GetContacts().execute();
     }
 
@@ -53,19 +54,37 @@ public class RealActivity extends AppCompatActivity {
         final String REQUEST_METHOD = "GET";
         final int READ_TIMEOUT = 15000;
         final int CONNECTION_TIMEOUT = 15000;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(RealActivity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
         @Override
         protected String doInBackground(String... params) {
             HttpHandler sh = new HttpHandler();
+
+
             String inputLine;
+            String jsonStr = sh.makeServiceCall(url);
+            Log.e(TAG, "Jason string is :: " + jsonStr);
             String result = null;
             //Create a connection
             URL myUrl = null;
             try {
                 myUrl = new URL(url);
+                Log.e(TAG, "the myURL is :: "+myUrl);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
             try {
+                assert myUrl != null;
                 HttpURLConnection connection = (HttpURLConnection)
                         myUrl.openConnection();
                 connection.setRequestMethod(REQUEST_METHOD);
@@ -87,7 +106,7 @@ public class RealActivity extends AppCompatActivity {
                 //Set our result equal to our stringBuilder
                 result = stringBuilder.toString();
                 TAG = "value";
-                Log.d(TAG, result);
+                Log.e(TAG, "RESULT : "+result);
             } catch (IOException e) {
                 e.printStackTrace();
             }
