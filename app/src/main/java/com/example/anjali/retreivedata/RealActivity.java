@@ -33,16 +33,17 @@ public class RealActivity extends AppCompatActivity {
 
     // URL to get contacts JSON
     private static String url = null;
-
+    PieChart pieChart;
     public static ArrayList<HashMap<String, String>> contactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_real);
         Intent i = getIntent();
         Bundle bundle = i.getExtras();
         url = (String) bundle.get("url");
+        Log.e(TAG, "The received URL is :: " + url);
         new GetContacts().execute();
     }
 
@@ -53,19 +54,37 @@ public class RealActivity extends AppCompatActivity {
         final String REQUEST_METHOD = "GET";
         final int READ_TIMEOUT = 15000;
         final int CONNECTION_TIMEOUT = 15000;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(RealActivity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
         @Override
         protected String doInBackground(String... params) {
             HttpHandler sh = new HttpHandler();
+
+
             String inputLine;
+            String jsonStr = sh.makeServiceCall(url);
+            Log.e(TAG, "Jason string is :: " + jsonStr);
             String result = null;
             //Create a connection
             URL myUrl = null;
             try {
                 myUrl = new URL(url);
+                Log.e(TAG, "the myURL is :: "+myUrl);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
             try {
+                assert myUrl != null;
                 HttpURLConnection connection = (HttpURLConnection)
                         myUrl.openConnection();
                 connection.setRequestMethod(REQUEST_METHOD);
@@ -87,7 +106,7 @@ public class RealActivity extends AppCompatActivity {
                 //Set our result equal to our stringBuilder
                 result = stringBuilder.toString();
                 TAG = "value";
-                Log.d(TAG, result);
+                Log.e(TAG, "RESULT : "+result);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -96,8 +115,43 @@ public class RealActivity extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            PieChart.pieChart();
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+            /**
+             * Updating parsed JSON data into ListView
+             * */
+
+            pieChart(result);
         }
 
+    }
+    public void pieChart(String result)
+    {
+        try
+        {
+            float[][] array = new float[2][5];
+            String[] words=result.split(":");
+            System.out.println(words[0]);
+            System.out.println(words[1]);
+            System.out.println(words[2]);
+            System.out.println(words[3]);
+            String[] applia1 = words[1].split(",");
+            String[] applia2 = words[2].split(",");
+            for(int i=1;i<applia1.length-1;i++)
+            {
+                array[0][i-1]=Float.valueOf(applia1[i]);
+                System.out.println(array[0][i-1]);
+            }
+            for(int i=1;i<applia2.length-1;i++)
+            {
+                array[1][i-1]=Float.valueOf(applia1[i]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
     }
 }
