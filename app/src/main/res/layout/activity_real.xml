@@ -16,5 +16,6 @@
         android:layout_height="match_parent"
         android:id="@+id/idPieChart"
         >
-    </com.github.mikephil.charting.charts.PieChart>
+
 </RelativeLayout>
+
