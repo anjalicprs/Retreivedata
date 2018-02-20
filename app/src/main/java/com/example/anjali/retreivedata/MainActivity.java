@@ -31,10 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void doneSelection(View v){
+        Log.e(TAG, "Did i go into doneSelection");
         boolean checked = ((RadioButton) v).isChecked();
-        RadioButton hour = (RadioButton)findViewById(R.id.hour);
-        RadioButton day = (RadioButton) findViewById(R.id.day);
-        RadioButton week = (RadioButton) findViewById(R.id.week);
+
         switch(v.getId()) {
             case R.id.hour:
                 if (checked){

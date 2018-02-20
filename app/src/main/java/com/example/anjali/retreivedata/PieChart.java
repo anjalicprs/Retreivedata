@@ -2,8 +2,6 @@ package com.example.anjali.retreivedata;
 
 import android.util.Log;
 
-import com.github.mikephil.charting.charts.LineChart;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
