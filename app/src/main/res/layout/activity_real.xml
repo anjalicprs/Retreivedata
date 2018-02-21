@@ -14,25 +14,24 @@ tools:context="com.example.anjali.retreivedata.RealActivity">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <LinearLayout
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="GRAPHICAL REPRESENTATION OF UNITS CONSUMED VS TIME"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textAlignment="center"/>
-        <com.github.mikephil.charting.charts.LineChart
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:id="@+id/lineChart">
-        </com.github.mikephil.charting.charts.LineChart>
-
+        android:layout_height="wrap_content"
+        android:text="GRAPHICAL REPRESENTATION OF UNITS CONSUMED VS TIME"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textAlignment="center"/>
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/lineChart">
+    </com.github.mikephil.charting.charts.LineChart>
         <TextView
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
@@ -57,9 +56,6 @@ tools:context="com.example.anjali.retreivedata.RealActivity">
             android:layout_height="match_parent"
             android:id="@+id/Id2val"/>
     </LinearLayout>
-
-
-
 </ScrollView>
-
 </RelativeLayout>
+

@@ -1,5 +1,4 @@
 package com.example.anjali.retreivedata;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -15,9 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -32,11 +29,6 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -98,7 +90,7 @@ public class RealActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String inputLine;
+            String result = null;
             URL myUrl = null;
             try {
                 myUrl = new URL(url);
@@ -156,7 +148,6 @@ public class RealActivity extends AppCompatActivity {
     }
     public void pieChart(String result)
     {
-       //piechart = (PieChart)findViewById(R.id.idpiechart);
         lineChart = (LineChart) findViewById(R.id.lineChart);
         float[][] appliance = new float[2][32];
         String[] words=result.split(":");
@@ -167,7 +158,19 @@ public class RealActivity extends AppCompatActivity {
         String[] applia1 = words[1].split(",");
         String[] applia2 = words[2].split(",");
         yData[0]=0;
-        yData[1]=1;
+        yData[1]=0;
+        for(int i=1;i<applia1.length-1;i++)
+        lineChart = (LineChart) findViewById(R.id.lineChart);
+        float[][] appliance = new float[2][32];
+        String[] words=result.split(":");
+        System.out.println(words[0]);
+        System.out.println(words[1]);
+        System.out.println(words[2]);
+        System.out.println(words[3]);
+        String[] applia1 = words[1].split(",");
+        String[] applia2 = words[2].split(",");
+        yData[0]=0;
+        yData[1]=0;
         for(int i=1;i<applia1.length-1;i++)
         {
             appliance[0][i-1]=Float.valueOf(applia1[i]);
@@ -246,9 +249,6 @@ public class RealActivity extends AppCompatActivity {
                 }
                 String employee = xData[pos1];
                 Toast.makeText(RealActivity.this, "Appliance " + employee + "\n" + "Units consumed :: " + sales + " KWh", Toast.LENGTH_SHORT).show();
-
-
-
             }
 
             @Override
@@ -269,7 +269,6 @@ public class RealActivity extends AppCompatActivity {
         for(int i = 1; i < xData.length; i++){
             xEntrys.add(xData[i]);
         }
-
         //create the data set
         PieDataSet pieDataSet = new PieDataSet(yEntrys, "Contribution of each appliance");
         pieDataSet.setSliceSpace(2);
@@ -340,3 +339,4 @@ public class RealActivity extends AppCompatActivity {
     }
 
 }
+

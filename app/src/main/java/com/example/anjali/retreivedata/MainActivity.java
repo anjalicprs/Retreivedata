@@ -75,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
-    public void login(View v){
+ public void login(View v){
         EditText user = (EditText) findViewById(R.id.username);
         EditText pass = (EditText) findViewById(R.id.pass);
         userName = user.getText().toString();
@@ -85,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
         if(internetConCheck()== true){
             new MainActivity.GetContacts().execute();
             Log.d(TAG, url);
-        }
-    }
+	}
+  }
 
     private void startMain() {
         Log.d(TAG, "hey");
