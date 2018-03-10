@@ -25,3 +25,4 @@ public class ExampleInstrumentedTest {
     }
 }
 //that was a cool stuff todo man
+//cool
