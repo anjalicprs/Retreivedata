@@ -24,3 +24,4 @@ public class ExampleInstrumentedTest {
         assertEquals("com.example.anjali.retreivedata", appContext.getPackageName());
     }
 }
+//that was a cool stuff todo man
